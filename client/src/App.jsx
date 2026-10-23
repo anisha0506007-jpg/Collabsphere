@@ -1,6 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 
 import ThemeToggle from "./components/ThemeToggle";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import DashboardPage from "./pages/DashboardPage";
 import ProjectPage from "./pages/ProjectPage";
@@ -16,33 +17,36 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        <Route
-          path="/projects/:projectId"
-          element={<ProjectPage />}
-        />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
 
-        <Route
-          path="/projects/:projectId/files"
-          element={<FilesPage />}
-        />
+          <Route
+            path="/projects/:projectId"
+            element={<ProjectPage />}
+          />
 
-        <Route
-          path="/projects/:projectId/ai"
-          element={<AIWorkspacePage />}
-        />
+          <Route
+            path="/projects/:projectId/files"
+            element={<FilesPage />}
+          />
 
-        <Route
-          path="/projects/:projectId/documentation"
-          element={<DocumentationPage />}
-        />
+          <Route
+            path="/projects/:projectId/ai"
+            element={<AIWorkspacePage />}
+          />
 
-        <Route
-          path="/projects/:projectId/activity"
-          element={<ActivityPage />}
-        />
+          <Route
+            path="/projects/:projectId/documentation"
+            element={<DocumentationPage />}
+          />
+
+          <Route
+            path="/projects/:projectId/activity"
+            element={<ActivityPage />}
+          />
+        </Route>
 
         <Route
           path="/public/:token"
