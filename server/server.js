@@ -22,7 +22,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://collabsphere-puce.vercel.app"
+      "https://collabsphere-puce.vercel.app",
+      "https://collabsphere-2n2bhnhsj-anisha0506007-jpgs-projects.vercel.app"
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
