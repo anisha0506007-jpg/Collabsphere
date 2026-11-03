@@ -1,6 +1,6 @@
-
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
 import {
   getProjectActivity,
   getProjectStats,
@@ -20,11 +20,14 @@ export default function ActivityPage() {
   const { projectId } = useParams();
 
   const [activities, setActivities] = useState([]);
+
   const [stats, setStats] = useState({
     notes: 0,
     files: 0,
     members: 0,
   });
+
+  const [contributions, setContributions] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -38,12 +41,13 @@ export default function ActivityPage() {
         getProjectStats(projectId),
       ]);
 
-      setActivities(activityData.activities);
-      setStats(statsData.stats);
+      setActivities(activityData.activities || []);
+      setStats(statsData.stats || {});
+      setContributions(statsData.contributions || []);
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Could not load project activity."
+        "Could not load activity."
       );
     } finally {
       setLoading(false);
@@ -62,11 +66,12 @@ export default function ActivityPage() {
     return (
       <main className="activity-page">
         <p className="status-message error">{error}</p>
+
         <button
           className="secondary-button"
           onClick={loadDashboard}
         >
-          Try again
+          Try Again
         </button>
       </main>
     );
@@ -77,39 +82,39 @@ export default function ActivityPage() {
       <header className="activity-header">
         <p className="eyebrow">PROJECT INSIGHTS</p>
         <h1>Activity Dashboard</h1>
-        <p>See your project's progress and recent team activity.</p>
+        <p>
+          Track project progress and individual team contributions.
+        </p>
       </header>
 
       <section className="stats-grid">
         <article className="stat-card">
-          <span className="stat-icon">📝</span>
-          <p>Total notes</p>
+          <span>📝</span>
+          <p>Total Notes</p>
           <h2>{stats.notes}</h2>
         </article>
 
         <article className="stat-card">
-          <span className="stat-icon">📁</span>
-          <p>Shared files</p>
+          <span>📁</span>
+          <p>Total Files</p>
           <h2>{stats.files}</h2>
         </article>
 
         <article className="stat-card">
-          <span className="stat-icon">👥</span>
-          <p>Team members</p>
-          <h2>{stats.members + 1}</h2>
-          <span className="stat-hint">Including the owner</span>
+          <span>👥</span>
+          <p>Team Members</p>
+          <h2>{stats.members}</h2>
         </article>
       </section>
 
-      <section className="activity-panel">
+      <section className="contribution-panel">
         <div className="activity-panel-heading">
           <div>
-            <h2>Recent activity</h2>
-            <p>The latest project events recorded by CollabSphere.</p>
+            <h2>Member Contributions</h2>
+            <p>Notes and files contributed by each team member.</p>
           </div>
 
           <button
-            type="button"
             className="secondary-button"
             onClick={loadDashboard}
           >
@@ -117,14 +122,55 @@ export default function ActivityPage() {
           </button>
         </div>
 
+        {contributions.length === 0 ? (
+          <p>No contribution data available.</p>
+        ) : (
+          <div className="contribution-table-wrapper">
+            <table className="contribution-table">
+              <thead>
+                <tr>
+                  <th>Member</th>
+                  <th>Role</th>
+                  <th>Notes</th>
+                  <th>Files</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {contributions.map((member) => (
+                  <tr key={member.userId}>
+                    <td>
+                      <strong>{member.name}</strong>
+                      <small>{member.email}</small>
+                    </td>
+
+                    <td>{member.role || "Owner"}</td>
+                    <td>{member.notes}</td>
+                    <td>{member.files}</td>
+                    <td>
+                      <strong>{member.total}</strong>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+
+      <section className="activity-panel">
+        <h2>Recent Activity</h2>
+
         {activities.length === 0 ? (
-          <p className="empty-activity">
-            No activity yet. Create a note or upload a file to get started.
-          </p>
+          <p>No activity yet.</p>
         ) : (
           <div className="activity-list">
             {activities.map((activity) => (
-              <article className="activity-item" key={activity._id}>
+              <article
+                className="activity-item"
+                key={activity._id}
+              >
                 <div className="activity-dot" />
 
                 <div className="activity-item-content">
@@ -132,15 +178,18 @@ export default function ActivityPage() {
                     <strong>
                       {activity.user?.name || "A team member"}
                     </strong>{" "}
-                    {actionLabels[activity.action] || "performed an action"}
+                    {actionLabels[activity.action] ||
+                      "performed an action"}
                   </p>
 
                   {activity.details && (
                     <span>{activity.details}</span>
                   )}
 
-                  <time dateTime={activity.createdAt}>
-                    {new Date(activity.createdAt).toLocaleString()}
+                  <time>
+                    {new Date(
+                      activity.createdAt
+                    ).toLocaleString()}
                   </time>
                 </div>
               </article>

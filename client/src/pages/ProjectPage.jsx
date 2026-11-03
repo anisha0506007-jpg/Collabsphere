@@ -2,25 +2,16 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+
 import {
   getProjectById,
   addProjectMember,
 } from "../services/projectService";
+
 import {
   enableProjectSharing,
   disableProjectSharing,
 } from "../services/shareService";
-
-function getInitials(name = "") {
-  return (
-    name
-      .trim()
-      .split(/\s+/)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase())
-      .join("") || "U"
-  );
-}
 
 export default function ProjectPage() {
   const { projectId } = useParams();
@@ -40,10 +31,11 @@ export default function ProjectPage() {
   const [shareMessage, setShareMessage] = useState("");
   const [shareLoading, setShareLoading] = useState(false);
 
+  // Load project details
   useEffect(() => {
     let cancelled = false;
 
-    async function loadProject() {
+    const loadProject = async () => {
       try {
         setLoading(true);
         setError("");
@@ -66,7 +58,7 @@ export default function ProjectPage() {
           setLoading(false);
         }
       }
-    }
+    };
 
     loadProject();
 
@@ -75,6 +67,7 @@ export default function ProjectPage() {
     };
   }, [projectId]);
 
+  // Identify project owner
   const ownerId =
     typeof project?.owner === "object"
       ? project.owner?._id
@@ -94,17 +87,8 @@ export default function ProjectPage() {
         role.slice(1).toLowerCase()
       : "Not available";
 
-  const ownerName =
-    typeof project?.owner === "object"
-      ? project.owner?.name
-      : null;
-
-  const ownerEmail =
-    typeof project?.owner === "object"
-      ? project.owner?.email
-      : null;
-
-  async function handleAddMember(event) {
+  // Add team member
+  const handleAddMember = async (event) => {
     event.preventDefault();
 
     setError("");
@@ -128,9 +112,10 @@ export default function ProjectPage() {
     } finally {
       setSaving(false);
     }
-  }
+  };
 
-  async function handleEnableSharing() {
+  // Enable public sharing
+  const handleEnableSharing = async () => {
     try {
       setShareLoading(true);
       setShareMessage("");
@@ -138,6 +123,7 @@ export default function ProjectPage() {
       const data = await enableProjectSharing(projectId);
 
       setShareUrl(data.shareUrl || "");
+
       setShareMessage(
         data.shareUrl
           ? "Public sharing is enabled."
@@ -151,9 +137,10 @@ export default function ProjectPage() {
     } finally {
       setShareLoading(false);
     }
-  }
+  };
 
-  async function handleDisableSharing() {
+  // Disable public sharing
+  const handleDisableSharing = async () => {
     try {
       setShareLoading(true);
       setShareMessage("");
@@ -170,9 +157,10 @@ export default function ProjectPage() {
     } finally {
       setShareLoading(false);
     }
-  }
+  };
 
-  async function handleCopyShareLink() {
+  // Copy sharing link
+  const handleCopyShareLink = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
       setShareMessage("Link copied to clipboard.");
@@ -181,255 +169,104 @@ export default function ProjectPage() {
         "Copy failed. Select and copy the link manually."
       );
     }
-  }
+  };
 
   if (loading) {
-    return (
-      <main className="workspace-page">
-        <div className="workspace-loading">
-          <span className="workspace-spinner" />
-          Loading your workspace…
-        </div>
-      </main>
-    );
+    return <p className="loading">Loading project...</p>;
   }
 
   if (!project) {
     return (
-      <main className="workspace-page">
-        <div className="workspace-alert error-message">
+      <main className="dashboard">
+        <p className="error-message">
           {error || "Project not found."}
-        </div>
+        </p>
 
-        <Link className="workspace-back-link" to="/dashboard">
-          ← Back to dashboard
+        <Link to="/dashboard">
+          Back to dashboard
         </Link>
       </main>
     );
   }
 
-  const tools = [
-    {
-      icon: "▤",
-      title: "Shared files",
-      description:
-        "Upload, organize, and download project files.",
-      path: `/projects/${project._id}/files`,
-      label: "Open files",
-    },
-    {
-      icon: "✦",
-      title: "AI workspace",
-      description:
-        "Ask questions, explain code, and get development help.",
-      path: `/projects/${project._id}/ai`,
-      label: "Open AI tools",
-    },
-    {
-      icon: "⌘",
-      title: "Documentation",
-      description:
-        "Generate and refine README or API documentation.",
-      path: `/projects/${project._id}/documentation`,
-      label: "Create documentation",
-    },
-    {
-      icon: "↗",
-      title: "Activity dashboard",
-      description:
-        "Review project activity and collaboration stats.",
-      path: `/projects/${project._id}/activity`,
-      label: "View activity",
-    },
-  ];
+  const ownerName =
+    typeof project.owner === "object"
+      ? project.owner?.name
+      : null;
+
+  const ownerEmail =
+    typeof project.owner === "object"
+      ? project.owner?.email
+      : null;
 
   return (
-    <main className="workspace-page">
-      <div className="workspace-topline">
-        <Link className="workspace-back-link" to="/dashboard">
-          ← All projects
-        </Link>
+    <main className="dashboard">
 
-        <span className="workspace-breadcrumb">
-          Workspace <span>/</span> {project.name}
+      {/* Back to dashboard */}
+      <Link className="back-link" to="/dashboard">
+        ← Back to dashboard
+      </Link>
+
+      {/* Project header */}
+      <section className="welcome-card project-detail-header">
+        <p className="eyebrow">PROJECT WORKSPACE</p>
+
+        <h1>{project.name}</h1>
+
+        <p>
+          {project.description || "No description added yet."}
+        </p>
+
+        <span className="role-pill">
+          Your role: {displayRole}
         </span>
-      </div>
+      </section>
 
-      <section className="workspace-hero">
-        <div className="workspace-hero-copy">
-          <div className="workspace-project-mark">
-            {(project.name || "P").charAt(0).toUpperCase()}
-          </div>
+      {/* Project information */}
+      <section className="project-section">
+        <h2>Project information</h2>
 
-          <div className="workspace-kicker">
-            PROJECT WORKSPACE
-          </div>
-
-          <h1>{project.name}</h1>
-
+        <div className="project-info-card">
           <p>
-            {project.description ||
-              "Your team's space for files, documentation, and AI-powered development."}
+            <strong>Owner:</strong>{" "}
+            {ownerName || "Owner details not loaded"}
           </p>
 
-          <div className="workspace-hero-meta">
-            <span className="workspace-role-pill">
-              <span className="workspace-role-dot" />
-              Your role: {displayRole}
-            </span>
+          <p>
+            <strong>Owner email:</strong>{" "}
+            {ownerEmail || "Owner email not loaded"}
+          </p>
 
-            <span className="workspace-created">
-              Created{" "}
-              {project.createdAt
-                ? new Date(project.createdAt).toLocaleDateString()
-                : "recently"}
-            </span>
-          </div>
-        </div>
+          <p>
+            <strong>Created:</strong>{" "}
+            {project.createdAt
+              ? new Date(
+                  project.createdAt
+                ).toLocaleDateString()
+              : "Not available"}
+          </p>
 
-        <div className="workspace-hero-art" aria-hidden="true">
-          <span>✦</span>
-          <i />
-          <b />
-          <em />
+          <p>
+            <strong>Team members:</strong>{" "}
+            {project.members?.length || 0}
+          </p>
         </div>
       </section>
 
-      {error && (
-        <p className="workspace-alert error-message" role="alert">
-          {error}
-        </p>
-      )}
+      {/* Team members */}
+      <section className="project-section">
+        <h2>Team members</h2>
 
-      {message && (
-        <p
-          className="workspace-alert success-message"
-          role="status"
-        >
-          {message}
-        </p>
-      )}
-
-      <section className="workspace-section">
-        <div className="workspace-section-heading">
-          <div>
-            <span className="workspace-overline">
-              YOUR PROJECT
-            </span>
-            <h2>Workspace tools</h2>
-            <p>
-              Everything you need to keep this project moving.
-            </p>
-          </div>
-        </div>
-
-        <div className="workspace-tool-grid">
-          {tools.map((tool) => (
-            <Link
-              className="workspace-tool-card"
-              to={tool.path}
-              key={tool.title}
-            >
-              <span className="workspace-tool-icon">
-                {tool.icon}
-              </span>
-
-              <h3>{tool.title}</h3>
-              <p>{tool.description}</p>
-
-              <span className="workspace-tool-link">
-                {tool.label} <span>→</span>
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="workspace-section">
-        <div className="workspace-section-heading">
-          <div>
-            <span className="workspace-overline">
-              PROJECT DETAILS
-            </span>
-            <h2>Project information</h2>
-          </div>
-        </div>
-
-        <div className="workspace-info-grid">
-          <article className="workspace-info-card">
-            <span className="workspace-info-label">
-              Project owner
-            </span>
-
-            <div className="workspace-owner-row">
-              <span className="workspace-member-avatar">
-                {getInitials(ownerName || user?.name)}
-              </span>
-
-              <div>
-                <strong>
-                  {ownerName ||
-                    (isOwner ? user?.name : null) ||
-                    "Project owner"}
-                </strong>
-                <p>
-                  {ownerEmail ||
-                    (isOwner ? user?.email : null) ||
-                    "Owner email not available"}
-                </p>
-              </div>
-            </div>
-          </article>
-
-          <article className="workspace-info-card">
-            <span className="workspace-info-label">
-              Team members
-            </span>
-
-            <strong className="workspace-info-number">
-              {(project.members?.length || 0) + 1}
-            </strong>
-
-            <p>Including the project owner</p>
-          </article>
-
-          <article className="workspace-info-card">
-            <span className="workspace-info-label">
-              Your permission
-            </span>
-
-            <strong className="workspace-info-role">
-              {displayRole}
-            </strong>
+        {!project.members?.length ? (
+          <div className="empty-state">
+            <h3>No teammates yet</h3>
 
             <p>
-              {isOwner
-                ? "You manage this project"
-                : role === "viewer"
-                  ? "Read-only access"
-                  : "Collaborator access"}
+              Add a registered user to collaborate on this project.
             </p>
-          </article>
-        </div>
-      </section>
-
-      <section className="workspace-section">
-        <div className="workspace-section-heading">
-          <div>
-            <span className="workspace-overline">
-              COLLABORATION
-            </span>
-            <h2>Team members</h2>
-            <p>People who have access to this project.</p>
           </div>
-
-          <span className="workspace-count">
-            {project.members?.length || 0} members
-          </span>
-        </div>
-
-        {project.members?.length ? (
-          <div className="workspace-members">
+        ) : (
+          <div className="member-list">
             {project.members.map((member, index) => {
               const memberUser =
                 member.user &&
@@ -443,184 +280,204 @@ export default function ProjectPage() {
                 member._id ||
                 index;
 
-              const memberDisplayRole = member.role
-                ? member.role.charAt(0).toUpperCase() +
-                  member.role.slice(1).toLowerCase()
-                : "Not available";
+              const memberDisplayRole =
+                member.role
+                  ? member.role.charAt(0).toUpperCase() +
+                    member.role.slice(1).toLowerCase()
+                  : "Not available";
 
               return (
                 <article
-                  className="workspace-member-card"
+                  className="member-card"
                   key={String(memberId)}
                 >
-                  <span className="workspace-member-avatar">
-                    {getInitials(memberUser?.name || "Member")}
-                  </span>
-
-                  <div className="workspace-member-copy">
+                  <div>
                     <strong>
-                      {memberUser?.name || "Member"}
+                      {memberUser?.name ||
+                        "User details not loaded"}
                     </strong>
+
                     <p>
                       {memberUser?.email ||
-                        "Member email not available"}
+                        "Member email not loaded"}
                     </p>
                   </div>
 
-                  <span
-                    className={`workspace-member-role ${
-                      member.role === "viewer"
-                        ? "viewer"
-                        : "editor"
-                    }`}
-                  >
+                  <span className="role-pill">
                     {memberDisplayRole}
                   </span>
                 </article>
               );
             })}
           </div>
-        ) : (
-          <div className="workspace-empty">
-            <span>♧</span>
-            <h3>No teammates yet</h3>
-            <p>
-              Add a registered user to collaborate on this project.
-            </p>
-          </div>
         )}
       </section>
 
+      {/* Add team member */}
       {isOwner && (
-        <section className="workspace-section workspace-management-grid">
-          <div className="workspace-management-card">
-            <span className="workspace-overline">
-              INVITE COLLABORATORS
-            </span>
+        <section className="project-section">
+          <h2>Add a team member</h2>
 
-            <h2>Add a team member</h2>
+          <p className="section-description">
+            Only registered users can be added at this stage.
+          </p>
 
-            <p>
-              Invite an existing CollabSphere user and choose
-              their access level.
-            </p>
+          <form
+            className="project-form"
+            onSubmit={handleAddMember}
+          >
+            <label htmlFor="member-email">
+              Member email
+            </label>
 
-            <form
-              className="project-form workspace-member-form"
-              onSubmit={handleAddMember}
+            <input
+              id="member-email"
+              type="email"
+              value={email}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
+              placeholder="teammate@example.com"
+              required
+            />
+
+            <label htmlFor="member-role">
+              Permission
+            </label>
+
+            <select
+              id="member-role"
+              value={memberRole}
+              onChange={(event) =>
+                setMemberRole(event.target.value)
+              }
             >
-              <label htmlFor="member-email">
-                Member email
-              </label>
+              <option value="editor">
+                Editor — can edit
+              </option>
 
-              <input
-                id="member-email"
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="teammate@example.com"
-                required
-              />
+              <option value="viewer">
+                Viewer — read only
+              </option>
+            </select>
 
-              <label htmlFor="member-role">
-                Permission level
-              </label>
-
-              <select
-                id="member-role"
-                value={memberRole}
-                onChange={(event) =>
-                  setMemberRole(event.target.value)
-                }
-              >
-                <option value="editor">
-                  Editor — can edit
-                </option>
-                <option value="viewer">
-                  Viewer — read only
-                </option>
-              </select>
-
-              <button type="submit" disabled={saving}>
-                {saving ? "Adding member…" : "Add team member →"}
-              </button>
-            </form>
-          </div>
-
-          <div className="workspace-management-card workspace-sharing-card">
-            <span className="workspace-overline">
-              SHARE YOUR WORK
-            </span>
-
-            <h2>Public sharing</h2>
-
-            <p>
-              Create a read-only link to share this project's
-              public overview. Anyone with the link may be able
-              to view it.
-            </p>
-
-            <button
-              className="primary-button"
-              type="button"
-              onClick={handleEnableSharing}
-              disabled={shareLoading}
-            >
-              {shareLoading
-                ? "Please wait…"
-                : "Generate share link"}
+            <button type="submit" disabled={saving}>
+              {saving ? "Adding member..." : "Add member"}
             </button>
+          </form>
 
-            {shareUrl && (
-              <div className="share-link-row">
-                <input
-                  aria-label="Public project link"
-                  type="text"
-                  value={shareUrl}
-                  readOnly
-                />
+          {error && (
+            <p className="error-message">{error}</p>
+          )}
 
-                <button
-                  className="secondary-button"
-                  type="button"
-                  onClick={handleCopyShareLink}
-                  disabled={shareLoading}
-                >
-                  Copy
-                </button>
-
-                <button
-                  className="danger-button"
-                  type="button"
-                  onClick={handleDisableSharing}
-                  disabled={shareLoading}
-                >
-                  Disable
-                </button>
-              </div>
-            )}
-
-            {shareMessage && (
-              <p
-                className={
-                  shareMessage.includes("enabled") ||
-                  shareMessage.includes("copied")
-                    ? "success-message"
-                    : "section-description"
-                }
-                role="status"
-              >
-                {shareMessage}
-              </p>
-            )}
-          </div>
+          {message && (
+            <p className="success-message">{message}</p>
+          )}
         </section>
       )}
 
-      <footer className="workspace-footer">
-        <Link to="/dashboard">← Back to all projects</Link>
-        <span>CollabSphere · Build together. Think bigger.</span>
-      </footer>
+      {/* Public sharing */}
+      {isOwner && (
+        <section className="project-section share-section">
+          <h2>Public sharing</h2>
+
+          <p className="section-description">
+            Create a read-only link to share this project's
+            public overview.
+          </p>
+
+          <button
+            type="button"
+            onClick={handleEnableSharing}
+            disabled={shareLoading}
+          >
+            {shareLoading
+              ? "Please wait..."
+              : "Generate share link"}
+          </button>
+
+          {shareUrl && (
+            <div className="share-link-row">
+              <input
+                aria-label="Public project link"
+                type="text"
+                value={shareUrl}
+                readOnly
+              />
+
+              <button
+                type="button"
+                onClick={handleCopyShareLink}
+                disabled={shareLoading}
+              >
+                Copy link
+              </button>
+
+              <button
+                type="button"
+                onClick={handleDisableSharing}
+                disabled={shareLoading}
+              >
+                Disable link
+              </button>
+            </div>
+          )}
+
+          {shareMessage && (
+            <p
+              className={
+                shareMessage.includes("enabled") ||
+                shareMessage.includes("copied")
+                  ? "success-message"
+                  : "section-description"
+              }
+              role="status"
+            >
+              {shareMessage}
+            </p>
+          )}
+        </section>
+      )}
+
+      {/* Project tools */}
+      <section className="project-section">
+        <h2>Project tools</h2>
+
+        <p className="section-description">
+          Access all your collaboration and development tools.
+        </p>
+
+        <div className="project-tools">
+
+          {/* NEW: Notes */}
+          <Link to={`/projects/${project._id}/notes`}>
+            📝 Project Notes →
+          </Link>
+
+          {/* Existing tools */}
+          <Link to={`/projects/${project._id}/files`}>
+            📁 Shared Files →
+          </Link>
+
+          <Link to={`/projects/${project._id}/ai`}>
+            🤖 AI Workspace →
+          </Link>
+
+          <Link to={`/projects/${project._id}/documentation`}>
+            📄 Documentation Generator →
+          </Link>
+
+          <Link to={`/projects/${project._id}/activity`}>
+            📊 Activity Dashboard →
+          </Link>
+
+        </div>
+      </section>
+
+      {error && !message && (
+        <p className="error-message">{error}</p>
+      )}
+
     </main>
   );
 }

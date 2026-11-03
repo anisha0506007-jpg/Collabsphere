@@ -1,17 +1,21 @@
-
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { askAI } from "../services/aiService";
+
+import {
+  generateDocsWithGemini,
+  generateReadmeWithGemini,
+} from "../services/aiService";
 
 export default function DocumentationPage() {
   const { projectId } = useParams();
 
-  const [task, setTask] = useState("generate_readme");
+  const [task, setTask] = useState("readme");
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
   const [technologies, setTechnologies] = useState("");
   const [setup, setSetup] = useState("");
   const [endpoint, setEndpoint] = useState("");
+
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -25,23 +29,21 @@ export default function DocumentationPage() {
       return;
     }
 
-    const prompt = task === "generate_readme"
-      ? `Create a README for this project.
+    const content = task === "readme"
+      ? `Project name: ${projectName}
 
-Project name: ${projectName}
 Description: ${description}
-Technologies: ${technologies || "Not specified"}
-Setup instructions: ${setup || "Not specified"}
 
-Do not invent missing details. Use placeholders when needed.`
-      : `Create API documentation for this endpoint.
+Technologies: ${technologies || "Not provided"}
 
-Project: ${projectName}
+Setup instructions: ${setup || "Not provided"}`
+      : `Project name: ${projectName}
+
 Description: ${description}
-Endpoint details: ${endpoint || "Not specified"}
-Technologies: ${technologies || "Not specified"}
 
-Document only the details provided. Clearly mark missing information.`;
+Technologies: ${technologies || "Not provided"}
+
+API endpoint details: ${endpoint || "Not provided"}`;
 
     try {
       setLoading(true);
@@ -49,16 +51,15 @@ Document only the details provided. Clearly mark missing information.`;
       setMessage("");
       setAnswer("");
 
-      const data = await askAI(projectId, {
-        task,
-        prompt,
-      });
+      const data = task === "readme"
+        ? await generateReadmeWithGemini(projectId, content)
+        : await generateDocsWithGemini(projectId, content);
 
       setAnswer(data.answer);
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Documentation generation failed."
+        "Documentation generation failed."
       );
     } finally {
       setLoading(false);
@@ -68,9 +69,9 @@ Document only the details provided. Clearly mark missing information.`;
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(answer);
-      setMessage("Documentation copied to clipboard.");
+      setMessage("Copied successfully.");
     } catch {
-      setError("Could not copy. Please select and copy the text manually.");
+      setError("Could not copy the documentation.");
     }
   };
 
@@ -83,12 +84,13 @@ Document only the details provided. Clearly mark missing information.`;
     const link = document.createElement("a");
 
     link.href = url;
-    link.download =
-      task === "generate_readme" ? "README.md" : "API-DOCUMENTATION.md";
 
-    document.body.appendChild(link);
+    link.download =
+      task === "readme"
+        ? "README.md"
+        : "API-DOCUMENTATION.md";
+
     link.click();
-    link.remove();
 
     URL.revokeObjectURL(url);
   };
@@ -96,125 +98,116 @@ Document only the details provided. Clearly mark missing information.`;
   return (
     <main className="docs-page">
       <header className="docs-header">
-        <p className="eyebrow">COLLABSPHERE AI TOOLS</p>
+        <p className="eyebrow">COLLABSPHERE AI</p>
         <h1>Documentation Generator</h1>
-        <p>
-          Create a first draft of your project README or API documentation.
-        </p>
+        <p>Generate README and API documentation using Gemini.</p>
       </header>
 
       <form className="docs-form" onSubmit={handleGenerate}>
-        <label htmlFor="doc-task">Documentation type</label>
+        <label>Documentation type</label>
+
         <select
-          id="doc-task"
           value={task}
           onChange={(event) => {
             setTask(event.target.value);
             setAnswer("");
-            setError("");
-            setMessage("");
           }}
         >
-          <option value="generate_readme">Project README</option>
-          <option value="explain_api">API documentation</option>
+          <option value="readme">README Generator</option>
+          <option value="docs">API Documentation</option>
         </select>
 
-        <label htmlFor="project-name">Project name *</label>
+        <label>Project name</label>
+
         <input
-          id="project-name"
           value={projectName}
           onChange={(event) => setProjectName(event.target.value)}
-          placeholder="Example: CollabSphere"
-          maxLength={100}
+          placeholder="CollabSphere"
           required
         />
 
-        <label htmlFor="project-description">Project description *</label>
+        <label>Project description</label>
+
         <textarea
-          id="project-description"
+          rows={3}
           value={description}
           onChange={(event) => setDescription(event.target.value)}
-          placeholder="What does your project do?"
-          rows={3}
-          maxLength={2000}
           required
         />
 
-        <label htmlFor="technologies">Technologies used</label>
+        <label>Technologies</label>
+
         <input
-          id="technologies"
           value={technologies}
           onChange={(event) => setTechnologies(event.target.value)}
-          placeholder="React, Express, MongoDB..."
-          maxLength={500}
+          placeholder="React, Node.js, MongoDB..."
         />
 
-        {task === "generate_readme" ? (
+        {task === "readme" ? (
           <>
-            <label htmlFor="setup">Installation and run instructions</label>
+            <label>Installation instructions</label>
+
             <textarea
-              id="setup"
+              rows={4}
               value={setup}
               onChange={(event) => setSetup(event.target.value)}
-              placeholder="Add the real commands needed to run your project."
-              rows={4}
-              maxLength={3000}
             />
           </>
         ) : (
           <>
-            <label htmlFor="endpoint">API endpoint details</label>
+            <label>API endpoint details</label>
+
             <textarea
-              id="endpoint"
+              rows={5}
               value={endpoint}
               onChange={(event) => setEndpoint(event.target.value)}
-              placeholder="Method, route, authentication, request body, response..."
-              rows={5}
-              maxLength={4000}
+              placeholder="Method, route, request body, response..."
             />
           </>
         )}
 
-        <button className="primary-button" disabled={loading} type="submit">
-          {loading ? "Generating..." : "Generate documentation"}
+        <button
+          className="primary-button"
+          type="submit"
+          disabled={loading}
+        >
+          {loading ? "Generating..." : "Generate with Gemini"}
         </button>
       </form>
 
-      {error && <p className="status-message error">{error}</p>}
-      {message && <p className="status-message success">{message}</p>}
+      {error && (
+        <p className="status-message error">{error}</p>
+      )}
+
+      {message && (
+        <p className="status-message success">{message}</p>
+      )}
 
       {answer && (
         <section className="docs-result">
-          <div className="docs-result-header">
-            <div>
-              <h2>Generated Markdown</h2>
-              <p>Review the content before adding it to your project.</p>
-            </div>
+          <h2>Generated Documentation</h2>
 
-            <div className="docs-actions">
-              <button
-                type="button"
-                className="secondary-button"
-                onClick={handleCopy}
-              >
-                Copy
-              </button>
-              <button
-                type="button"
-                className="primary-button"
-                onClick={handleDownload}
-              >
-                Download .md
-              </button>
-            </div>
+          <div className="docs-actions">
+            <button
+              className="secondary-button"
+              onClick={handleCopy}
+            >
+              Copy
+            </button>
+
+            <button
+              className="primary-button"
+              onClick={handleDownload}
+            >
+              Download Markdown
+            </button>
           </div>
 
           <textarea
             className="docs-output"
-            aria-label="Generated documentation, editable"
+            rows={20}
             value={answer}
             onChange={(event) => setAnswer(event.target.value)}
-            rows={20}
           />
         </section>
       )}

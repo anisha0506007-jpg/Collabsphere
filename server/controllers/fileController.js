@@ -1,12 +1,25 @@
 import path from "path";
 import { fileURLToPath } from "url";
-import { unlink } from "fs/promises";
+import { unlink, readFile } from "fs/promises";
+
 import ProjectFile from "../models/ProjectFile.js";
 import { logActivity } from "../services/activityService.js";
 
 const currentFile = fileURLToPath(import.meta.url);
 const currentDirectory = path.dirname(currentFile);
-const uploadDirectory = path.resolve(currentDirectory, "../uploads");
+
+const uploadDirectory = path.resolve(
+  currentDirectory,
+  "../uploads"
+);
+
+const codeExtensions = [
+  ".js", ".jsx", ".ts", ".tsx", ".py",
+  ".html", ".css", ".json", ".java",
+  ".c", ".cpp", ".cs", ".php",
+  ".sql", ".xml", ".yml", ".yaml",
+  ".sh", ".txt", ".md",
+];
 
 export const uploadProjectFile = async (req, res) => {
   try {
@@ -41,7 +54,7 @@ export const uploadProjectFile = async (req, res) => {
       await unlink(req.file.path).catch(() => {});
     }
 
-    console.error("Upload file error:", error.message);
+    console.error("Upload error:", error.message);
 
     return res.status(500).json({
       message: "Failed to upload file",
@@ -67,6 +80,72 @@ export const getProjectFiles = async (req, res) => {
   }
 };
 
+export const previewProjectFile = async (req, res) => {
+  try {
+    const file = await ProjectFile.findOne({
+      _id: req.params.fileId,
+      project: req.project._id,
+    });
+
+    if (!file) {
+      return res.status(404).json({
+        message: "File not found",
+      });
+    }
+
+    const extension = path.extname(file.originalName).toLowerCase();
+    const filePath = path.join(uploadDirectory, file.storedName);
+
+    const isCodeFile = codeExtensions.includes(extension);
+
+    if (isCodeFile) {
+      const content = await readFile(filePath, "utf8");
+
+      return res.status(200).json({
+        type: "code",
+        name: file.originalName,
+        content,
+      });
+    }
+
+    const isImage = [
+      ".png", ".jpg", ".jpeg", ".webp",
+    ].includes(extension);
+
+    if (isImage) {
+      res.type(file.mimeType || "application/octet-stream");
+      res.setHeader("Content-Disposition", "inline");
+      return res.sendFile(filePath);
+    }
+
+    if (extension === ".pdf") {
+      res.type("application/pdf");
+      res.setHeader("Content-Disposition", "inline");
+      return res.sendFile(filePath);
+    }
+
+    if (extension === ".docx") {
+      return res.status(200).json({
+        type: "unsupported",
+        name: file.originalName,
+        message: "DOCX preview is not available. Please download this file.",
+      });
+    }
+
+    return res.status(200).json({
+      type: "unsupported",
+      name: file.originalName,
+      message: "Preview is not available for this file type.",
+    });
+  } catch (error) {
+    console.error("Preview error:", error.message);
+
+    return res.status(500).json({
+      message: "Could not preview this file",
+    });
+  }
+};
+
 export const downloadProjectFile = async (req, res) => {
   try {
     const file = await ProjectFile.findOne({
@@ -84,7 +163,7 @@ export const downloadProjectFile = async (req, res) => {
 
     return res.download(filePath, file.originalName, (error) => {
       if (error && !res.headersSent) {
-        console.error("Download file error:", error.message);
+        console.error("Download error:", error.message);
 
         res.status(500).json({
           message: "Failed to download file",
@@ -92,8 +171,6 @@ export const downloadProjectFile = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error("Download file error:", error.message);
-
     return res.status(500).json({
       message: "Failed to download file",
     });
@@ -134,7 +211,7 @@ export const deleteProjectFile = async (req, res) => {
       message: "File deleted successfully",
     });
   } catch (error) {
-    console.error("Delete file error:", error.message);
+    console.error("Delete error:", error.message);
 
     return res.status(500).json({
       message: "Failed to delete file",

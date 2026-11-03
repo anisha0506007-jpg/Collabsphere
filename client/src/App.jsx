@@ -1,70 +1,67 @@
-import { Navigate, Routes, Route } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-import ThemeToggle from "./components/ThemeToggle";
+import ProjectPage from "./pages/ProjectPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import DashboardPage from "./pages/DashboardPage";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 
-import DashboardPage from "./pages/DashboardPage";
-import ProjectPage from "./pages/ProjectPage";
 import FilesPage from "./pages/FilesPage";
+import NotesPage from "./pages/NotesPage";
 import AIWorkspacePage from "./pages/AIWorkspacePage";
 import DocumentationPage from "./pages/DocumentationPage";
 import ActivityPage from "./pages/ActivityPage";
 import PublicProjectPage from "./pages/PublicProjectPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
 
-function App() {
+export default function App() {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+    <Routes>
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
 
-          <Route
-            path="/projects/:projectId"
-            element={<ProjectPage />}
-          />
+      <Route
+        path="/shared/:token"
+        element={<PublicProjectPage />}
+      />
 
-          <Route
-            path="/projects/:projectId/files"
-            element={<FilesPage />}
-          />
-
-          <Route
-            path="/projects/:projectId/ai"
-            element={<AIWorkspacePage />}
-          />
-
-          <Route
-            path="/projects/:projectId/documentation"
-            element={<DocumentationPage />}
-          />
-
-          <Route
-            path="/projects/:projectId/activity"
-            element={<ActivityPage />}
-          />
-        </Route>
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<DashboardPage />} />
 
         <Route
-          path="/public/:token"
-          element={<PublicProjectPage />}
+          path="/projects/:projectId"
+          element={<ProjectPage />}
         />
 
         <Route
-          path="/shared/:token"
-          element={<PublicProjectPage />}
+          path="/projects/:projectId/notes"
+          element={<NotesPage />}
         />
 
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-      </Routes>
+        <Route
+          path="/projects/:projectId/files"
+          element={<FilesPage />}
+        />
 
-      <ThemeToggle />
-    </>
+        <Route
+          path="/projects/:projectId/activity"
+          element={<ActivityPage />}
+        />
+
+        <Route
+          path="/projects/:projectId/ai"
+          element={<AIWorkspacePage />}
+        />
+
+        <Route
+          path="/projects/:projectId/documentation"
+          element={<DocumentationPage />}
+        />
+      </Route>
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
-
-export default App;

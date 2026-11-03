@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 const noteSchema = new mongoose.Schema(
@@ -20,6 +19,7 @@ const noteSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Project",
       required: true,
+      index: true,
     },
 
     author: {
@@ -32,6 +32,8 @@ const noteSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+noteSchema.index({ project: 1, updatedAt: -1 });
 
 const Note = mongoose.model("Note", noteSchema);
 

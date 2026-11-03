@@ -1,4 +1,3 @@
-
 import express from "express";
 import mongoose from "mongoose";
 
@@ -9,6 +8,7 @@ import { upload } from "../middleware/uploadMiddleware.js";
 import {
   uploadProjectFile,
   getProjectFiles,
+  previewProjectFile,
   downloadProjectFile,
   deleteProjectFile,
 } from "../controllers/fileController.js";
@@ -45,6 +45,13 @@ router.post(
   requireEditor,
   upload.single("file"),
   uploadProjectFile
+);
+
+router.get(
+  "/:projectId/:fileId/preview",
+  loadProject,
+  validateFileId,
+  previewProjectFile
 );
 
 router.get(

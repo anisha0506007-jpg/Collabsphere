@@ -1,4 +1,3 @@
-
 import multer from "multer";
 import path from "path";
 import { randomUUID } from "crypto";
@@ -35,6 +34,24 @@ const allowedExtensions = [
   ".txt",
   ".md",
   ".docx",
+  ".js",
+  ".jsx",
+  ".ts",
+  ".tsx",
+  ".py",
+  ".html",
+  ".css",
+  ".json",
+  ".java",
+  ".c",
+  ".cpp",
+  ".cs",
+  ".php",
+  ".sql",
+  ".xml",
+  ".yml",
+  ".yaml",
+  ".sh",
 ];
 
 const allowedMimeTypes = [
@@ -44,20 +61,32 @@ const allowedMimeTypes = [
   "image/webp",
   "text/plain",
   "text/markdown",
+  "text/javascript",
+  "application/javascript",
+  "application/json",
+  "text/html",
+  "text/css",
+  "application/xml",
+  "text/xml",
+  "application/x-python-code",
+  "application/x-sh",
+  "application/octet-stream",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
 
 const fileFilter = (req, file, cb) => {
   const extension = path.extname(file.originalname).toLowerCase();
 
-  if (
-    allowedExtensions.includes(extension) &&
-    allowedMimeTypes.includes(file.mimetype)
-  ) {
-    return cb(null, true);
+  if (!allowedExtensions.includes(extension)) {
+    return cb(new Error("This file extension is not allowed"));
   }
 
-  cb(new Error("This file type is not allowed"));
+ 
+  if (!file.mimetype) {
+    return cb(new Error("Invalid file type"));
+  }
+
+  cb(null, true);
 };
 
 export const upload = multer({
