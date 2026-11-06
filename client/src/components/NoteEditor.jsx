@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 import {
@@ -15,6 +15,7 @@ export default function NoteEditor({
   const [title, setTitle] = useState(note?.title || "");
   const [content, setContent] = useState(note?.content || "");
   const [mode, setMode] = useState("edit");
+  const editorRef = useRef(null);
 
   const [aiAnswer, setAiAnswer] = useState("");
   const [aiLoading, setAiLoading] = useState(false);
@@ -75,6 +76,73 @@ export default function NoteEditor({
     }
   };
 
+  const formatSelection = ({
+    prefix,
+    suffix = "",
+    placeholder = "text",
+    formatLines = false,
+  }) => {
+    const textarea = editorRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    const selectionStart = textarea.selectionStart;
+    const selectionEnd = textarea.selectionEnd;
+    let replaceStart = selectionStart;
+    let replaceEnd = selectionEnd;
+    let selectedText = content.slice(selectionStart, selectionEnd);
+
+    if (formatLines) {
+      replaceStart = content.lastIndexOf("\n", selectionStart - 1) + 1;
+      const nextLineBreak = content.indexOf("\n", selectionEnd);
+      replaceEnd = nextLineBreak === -1 ? content.length : nextLineBreak;
+      selectedText = content.slice(replaceStart, replaceEnd);
+
+      if (!selectedText) {
+        selectedText = placeholder;
+      }
+
+      selectedText = selectedText
+        .split("\n")
+        .map((line) => `${prefix}${line}`)
+        .join("\n");
+    } else {
+      if (!selectedText) {
+        selectedText = placeholder;
+      }
+
+      selectedText = `${prefix}${selectedText}${suffix}`;
+    }
+
+    const updatedContent =
+      content.slice(0, replaceStart) +
+      selectedText +
+      content.slice(replaceEnd);
+
+    if (updatedContent.length > 50000) {
+      setError("Formatting would exceed the 50,000 character limit.");
+      return;
+    }
+
+    setError("");
+    setContent(updatedContent);
+
+    const selectionOffset = formatLines ? 0 : prefix.length;
+    const nextSelectionStart = replaceStart + selectionOffset;
+    const nextSelectionEnd = formatLines
+      ? replaceStart + selectedText.length
+      : nextSelectionStart +
+        (content.slice(selectionStart, selectionEnd).length ||
+          placeholder.length);
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+      textarea.setSelectionRange(nextSelectionStart, nextSelectionEnd);
+    });
+  };
+
   return (
     <section className="note-editor">
       <form onSubmit={handleSubmit}>
@@ -110,6 +178,7 @@ export default function NoteEditor({
           <button
             type="button"
             className={mode === "edit" ? "active" : ""}
+            aria-pressed={mode === "edit"}
             onClick={() => setMode("edit")}
           >
             Edit Markdown
@@ -118,6 +187,7 @@ export default function NoteEditor({
           <button
             type="button"
             className={mode === "preview" ? "active" : ""}
+            aria-pressed={mode === "preview"}
             onClick={() => setMode("preview")}
           >
             Preview
@@ -125,11 +195,114 @@ export default function NoteEditor({
         </div>
 
         {mode === "edit" ? (
-          <textarea
-            className="markdown-input"
-            value={content}
-            onChange={(event) => setContent(event.target.value)}
-            placeholder={`# My Notes
+          <>
+            <div className="markdown-formatting-toolbar" role="toolbar" aria-label="Markdown formatting">
+              <button
+                type="button"
+                title="Bold"
+                aria-label="Bold"
+                onClick={() =>
+                  formatSelection({ prefix: "**", suffix: "**", placeholder: "bold text" })
+                }
+              >
+                <strong>B</strong>
+              </button>
+              <button
+                type="button"
+                title="Italic"
+                aria-label="Italic"
+                onClick={() =>
+                  formatSelection({ prefix: "*", suffix: "*", placeholder: "italic text" })
+                }
+              >
+                <em>I</em>
+              </button>
+              <button
+                type="button"
+                title="Heading"
+                aria-label="Heading"
+                onClick={() =>
+                  formatSelection({ prefix: "## ", placeholder: "Heading", formatLines: true })
+                }
+              >
+                H
+              </button>
+              <button
+                type="button"
+                title="Link"
+                aria-label="Link"
+                onClick={() =>
+                  formatSelection({
+                    prefix: "[",
+                    suffix: "](url)",
+                    placeholder: "link text",
+                  })
+                }
+              >
+                Link
+              </button>
+              <button
+                type="button"
+                title="Quote"
+                aria-label="Quote"
+                onClick={() =>
+                  formatSelection({ prefix: "> ", placeholder: "Quote", formatLines: true })
+                }
+              >
+                Quote
+              </button>
+              <button
+                type="button"
+                title="Bulleted list"
+                aria-label="Bulleted list"
+                onClick={() =>
+                  formatSelection({ prefix: "- ", placeholder: "List item", formatLines: true })
+                }
+              >
+                • List
+              </button>
+              <button
+                type="button"
+                title="Numbered list"
+                aria-label="Numbered list"
+                onClick={() =>
+                  formatSelection({ prefix: "1. ", placeholder: "List item", formatLines: true })
+                }
+              >
+                1. List
+              </button>
+              <button
+                type="button"
+                title="Inline code"
+                aria-label="Inline code"
+                onClick={() =>
+                  formatSelection({ prefix: "`", suffix: "`", placeholder: "code" })
+                }
+              >
+                {"< >"}
+              </button>
+              <button
+                type="button"
+                title="Code block"
+                aria-label="Code block"
+                onClick={() =>
+                  formatSelection({
+                    prefix: "```\n",
+                    suffix: "\n```",
+                    placeholder: "code",
+                  })
+                }
+              >
+                {"```"}
+              </button>
+            </div>
+            <textarea
+              ref={editorRef}
+              className="markdown-input"
+              aria-label="Note content in Markdown"
+              value={content}
+              onChange={(event) => setContent(event.target.value)}
+              placeholder={`# My Notes
 
 ## Introduction
 
@@ -142,9 +315,10 @@ Write your notes using Markdown.
 console.log("Hello CollabSphere");
 \`\`\`
 `}
-            rows={14}
-            maxLength={50000}
-          />
+              rows={14}
+              maxLength={50000}
+            />
+          </>
         ) : (
           <div className="markdown-preview">
             <ReactMarkdown>{content}</ReactMarkdown>

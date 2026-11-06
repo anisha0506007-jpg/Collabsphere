@@ -1,7 +1,10 @@
 
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { askAI } from "../services/aiService";
+import {
+  askAI,
+  generateReadmeWithGemini,
+} from "../services/aiService";
 
 const tasks = [
   { value: "general", label: "Ask a question" },
@@ -32,10 +35,12 @@ export default function AIWorkspacePage() {
       setError("");
       setAnswer("");
 
-      const data = await askAI(projectId, {
-        task,
-        prompt: prompt.trim(),
-      });
+      const data = task === "generate_readme"
+        ? await generateReadmeWithGemini(projectId, prompt.trim())
+        : await askAI(projectId, {
+            task,
+            prompt: prompt.trim(),
+          });
 
       setAnswer(data.answer);
     } catch (err) {

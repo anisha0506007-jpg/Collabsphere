@@ -383,7 +383,8 @@ export default function ProjectPage() {
 
           <p className="section-description">
             Create a read-only link to share this project's
-            public overview.
+            public overview. A project note titled README is
+            included in the shared page.
           </p>
 
           <button

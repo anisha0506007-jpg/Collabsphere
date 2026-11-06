@@ -1,5 +1,6 @@
 
 import { createHash, randomBytes } from "node:crypto";
+import Note from "../models/Note.js";
 import Project from "../models/Project.js";
 
 // Generate a public link for a project
@@ -19,7 +20,7 @@ export const enableProjectSharing = async (req, res) => {
     const clientUrl =
       process.env.CLIENT_URL || "http://localhost:5173";
 
-    const shareUrl = `${clientUrl}/public/${token}`;
+    const shareUrl = `${clientUrl}/shared/${token}`;
 
     return res.status(200).json({
       message: "Public sharing enabled",
@@ -81,7 +82,19 @@ export const getPublicProject = async (req, res) => {
       });
     }
 
-    return res.status(200).json({ project });
+    const readme = await Note.findOne({
+      project: project._id,
+      title: /^readme$/i,
+    })
+      .select("title content updatedAt")
+      .sort({ updatedAt: -1 });
+
+    return res.status(200).json({
+      project: {
+        ...project.toObject(),
+        readme,
+      },
+    });
   } catch (error) {
     console.error("Get public project error:", error.message);
 

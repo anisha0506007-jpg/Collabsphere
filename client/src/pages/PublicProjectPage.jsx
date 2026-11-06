@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 import { getPublicProject } from "../services/shareService";
 
 function PublicProjectPage() {
@@ -57,13 +58,25 @@ function PublicProjectPage() {
           {project.description || "No project description provided."}
         </p>
 
+        {project.readme && (
+          <section className="public-project-readme">
+            <h2>{project.readme.title}</h2>
+            <div className="markdown-preview">
+              <ReactMarkdown>
+                {project.readme.content || ""}
+              </ReactMarkdown>
+            </div>
+          </section>
+        )}
+
         <p className="public-project-date">
           Created on{" "}
           {new Date(project.createdAt).toLocaleDateString()}
         </p>
 
         <p className="public-project-notice">
-          You are viewing the public project overview.
+          You are viewing the public project overview
+          {project.readme ? " and README" : ""}.
         </p>
       </div>
     </main>
