@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import AppIcon from "../components/AppIcon";
 
 import {
   getProjectActivity,
@@ -89,19 +90,19 @@ export default function ActivityPage() {
 
       <section className="stats-grid">
         <article className="stat-card">
-          <span>📝</span>
+          <span><AppIcon name="notes" /></span>
           <p>Total Notes</p>
           <h2>{stats.notes}</h2>
         </article>
 
         <article className="stat-card">
-          <span>📁</span>
+          <span><AppIcon name="folder" /></span>
           <p>Total Files</p>
           <h2>{stats.files}</h2>
         </article>
 
         <article className="stat-card">
-          <span>👥</span>
+          <span><AppIcon name="users" /></span>
           <p>Team Members</p>
           <h2>{stats.members}</h2>
         </article>

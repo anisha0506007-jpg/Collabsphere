@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import AppIcon from "../components/AppIcon";
 import { useAuth } from "../context/AuthContext";
 
 import {
@@ -452,24 +453,29 @@ export default function ProjectPage() {
 
           {/* NEW: Notes */}
           <Link to={`/projects/${project._id}/notes`}>
-            📝 Project Notes →
+            <AppIcon name="notes" /> Project Notes
+            <AppIcon name="arrow" size={17} />
           </Link>
 
           {/* Existing tools */}
           <Link to={`/projects/${project._id}/files`}>
-            📁 Shared Files →
+            <AppIcon name="folder" /> Shared Files
+            <AppIcon name="arrow" size={17} />
           </Link>
 
           <Link to={`/projects/${project._id}/ai`}>
-            🤖 AI Workspace →
+            <AppIcon name="sparkle" /> AI Workspace
+            <AppIcon name="arrow" size={17} />
           </Link>
 
           <Link to={`/projects/${project._id}/documentation`}>
-            📄 Documentation Generator →
+            <AppIcon name="file" /> Documentation Generator
+            <AppIcon name="arrow" size={17} />
           </Link>
 
           <Link to={`/projects/${project._id}/activity`}>
-            📊 Activity Dashboard →
+            <AppIcon name="activity" /> Activity Dashboard
+            <AppIcon name="arrow" size={17} />
           </Link>
 
         </div>

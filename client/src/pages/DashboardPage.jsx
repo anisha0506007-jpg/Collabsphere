@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+import AppIcon from "../components/AppIcon";
 import {
   createProject,
   getProjects,
@@ -307,19 +308,19 @@ export default function DashboardPage() {
                 <b className="cs-art-line medium" />
 
                 <div className="cs-art-task">
-                  <span>✓</span>
+                  <span><AppIcon name="check" size={12} /></span>
                   <i />
                   <b />
                 </div>
 
                 <div className="cs-art-task">
-                  <span>✦</span>
+                  <span><AppIcon name="sparkle" size={12} /></span>
                   <i />
                   <b />
                 </div>
 
                 <div className="cs-art-task">
-                  <span>↗</span>
+                  <span><AppIcon name="arrow" size={12} /></span>
                   <i />
                   <b />
                 </div>
@@ -354,7 +355,9 @@ export default function DashboardPage() {
         aria-label="Workspace overview"
       >
         <div className="cs-overview-card">
-          <span className="cs-overview-icon orange">▦</span>
+          <span className="cs-overview-icon">
+            <AppIcon name="grid" />
+          </span>
           <div>
             <p>All accessible projects</p>
             <strong>{loading ? "—" : projects.length}</strong>
@@ -363,7 +366,9 @@ export default function DashboardPage() {
         </div>
 
         <div className="cs-overview-card">
-          <span className="cs-overview-icon peach">✦</span>
+          <span className="cs-overview-icon">
+            <AppIcon name="folder" />
+          </span>
           <div>
             <p>Created by you</p>
             <strong>{loading ? "—" : ownProjects.length}</strong>
@@ -372,7 +377,9 @@ export default function DashboardPage() {
         </div>
 
         <div className="cs-overview-card">
-          <span className="cs-overview-icon green">↗</span>
+          <span className="cs-overview-icon">
+            <AppIcon name="users" />
+          </span>
           <div>
             <p>Shared with you</p>
             <strong>{loading ? "—" : sharedProjects.length}</strong>
@@ -432,7 +439,9 @@ export default function DashboardPage() {
             </div>
           ) : filteredProjects.length === 0 ? (
             <div className="cs-empty-state">
-              <div className="cs-empty-icon">▦</div>
+              <div className="cs-empty-icon">
+                <AppIcon name="grid" size={24} />
+              </div>
 
               <h3>
                 {search
@@ -463,7 +472,9 @@ export default function DashboardPage() {
         </div>
 
         <aside className="cs-create-panel" id="create-project">
-          <div className="cs-create-icon">＋</div>
+          <div className="cs-create-icon">
+            <AppIcon name="plus" size={22} />
+          </div>
 
           <span className="cs-eyebrow">START SOMETHING NEW</span>
 

@@ -1,4 +1,5 @@
 import { useTheme } from "../context/ThemeContext";
+import AppIcon from "./AppIcon";
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
@@ -12,9 +13,11 @@ export default function ThemeToggle() {
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
       title={`Switch to ${isDark ? "light" : "dark"} mode`}
     >
-      <span className="global-theme-icon" aria-hidden="true">
-        {isDark ? "☀" : "☾"}
-      </span>
+      <AppIcon
+        className="global-theme-icon"
+        name={isDark ? "sun" : "moon"}
+        size={18}
+      />
 
       <span>
         {isDark ? "Light mode" : "Dark mode"}

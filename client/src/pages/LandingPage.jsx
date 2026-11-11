@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
+import AppIcon from "../components/AppIcon";
 
 const features = [
   {
     number: "01",
-    icon: "↗",
+    icon: "grid",
     title: "Projects with purpose",
     description:
       "Give every idea a shared home for decisions, progress, and the people moving it forward.",
@@ -12,7 +13,7 @@ const features = [
   },
   {
     number: "02",
-    icon: "▤",
+    icon: "notes",
     title: "Everything in its place",
     description:
       "Keep notes, files, and project context together, so the important details stay close to the work.",
@@ -20,7 +21,7 @@ const features = [
   },
   {
     number: "03",
-    icon: "✳",
+    icon: "sparkle",
     title: "A little help from AI",
     description:
       "Turn a blank page into a first draft, explore ideas, and keep momentum when you need a nudge.",
@@ -163,7 +164,9 @@ export default function LandingPage() {
           {features.map((feature) => (
             <article className="cs-home-feature-card" key={feature.number}>
               <div className="cs-home-feature-top">
-                <span className="cs-home-feature-icon" aria-hidden="true">{feature.icon}</span>
+                <span className="cs-home-feature-icon">
+                  <AppIcon name={feature.icon} size={19} />
+                </span>
                 <span>{feature.number}</span>
               </div>
               <span className="cs-home-feature-label">{feature.label}</span>

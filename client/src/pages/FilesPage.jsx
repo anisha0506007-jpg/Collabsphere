@@ -9,6 +9,7 @@ import {
   deleteProjectFile,
 } from "../services/fileService";
 
+import AppIcon from "../components/AppIcon";
 import FilePreview from "../components/FilePreview";
 
 export default function FilesPage() {
@@ -175,10 +176,11 @@ export default function FilesPage() {
         )}
 
         <button
-          className="primary-button"
+          className="primary-button upload-submit-button"
           type="submit"
           disabled={uploading}
         >
+          <AppIcon name="upload" size={17} />
           {uploading ? "Uploading..." : "Upload File"}
         </button>
       </form>

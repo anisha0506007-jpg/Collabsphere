@@ -6047,3 +6047,1311 @@ html[data-theme="light"] .note-card {
     font-size: 12px;
   }
 }
+
+/* Final shared theme tokens: keep every route on the same palette. */
+
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --page-bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-soft: #e9eff7;
+  --text-primary: #273446;
+  --text-secondary: #68788d;
+  --border-color: #d9e2ed;
+  --accent: #183b64;
+  --accent-hover: #102b49;
+  --input-bg: #fbfcfe;
+  --shadow-color: rgba(28, 48, 73, .075);
+  --app-bg: var(--page-bg);
+  --app-surface: var(--surface);
+  --app-soft: var(--surface-soft);
+  --app-text: var(--text-primary);
+  --app-muted: var(--text-secondary);
+  --app-border: var(--border-color);
+  --app-orange: var(--accent);
+  --app-orange-hover: var(--accent-hover);
+  --app-input: var(--input-bg);
+  --app-shadow: 0 10px 28px var(--shadow-color);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page-bg: #101923;
+  --surface: #192637;
+  --surface-soft: #24364b;
+  --text-primary: #f2f5f9;
+  --text-secondary: #a8b5c5;
+  --border-color: #35465a;
+  --accent: #8db8ea;
+  --accent-hover: #b5d1f2;
+  --input-bg: #121f2d;
+  --shadow-color: rgba(0, 0, 0, .2);
+  --app-bg: var(--page-bg);
+  --app-surface: var(--surface);
+  --app-soft: var(--surface-soft);
+  --app-text: var(--text-primary);
+  --app-muted: var(--text-secondary);
+  --app-border: var(--border-color);
+  --app-orange: var(--accent);
+  --app-orange-hover: var(--accent-hover);
+  --app-input: var(--input-bg);
+  --app-shadow: 0 12px 30px var(--shadow-color);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background: var(--page-bg);
+  color: var(--text-primary);
+}
+
+body {
+  transition: background-color .22s ease, color .22s ease;
+}
+
+.dashboard,
+.workspace-page,
+.files-page,
+.notes-page,
+.ai-workspace,
+.docs-page,
+.activity-page,
+.public-project {
+  color: var(--text-primary);
+}
+
+.auth-container,
+.public-project {
+  background:
+    radial-gradient(ellipse at top left, var(--surface-soft), transparent 54%),
+    var(--page-bg);
+}
+
+.auth-card,
+.project-card,
+.feature-card,
+.project-form,
+.project-info-card,
+.member-card,
+.upload-card,
+.file-card,
+.ai-form,
+.ai-answer,
+.docs-form,
+.docs-result,
+.stat-card,
+.activity-panel,
+.share-section,
+.public-project-card,
+.note-card,
+.note-editor,
+.file-preview-modal,
+.workspace-tool-card,
+.workspace-info-card,
+.workspace-member-card,
+.workspace-empty,
+.workspace-management-card {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background-color: var(--surface);
+  box-shadow: var(--app-shadow);
+}
+
+.auth-card h1,
+.dashboard h1,
+.dashboard h2,
+.dashboard h3,
+.workspace-page h1,
+.workspace-page h2,
+.workspace-page h3,
+.notes-page h1,
+.notes-page h2,
+.notes-page h3,
+.files-page h1,
+.files-page h2,
+.ai-workspace h1,
+.ai-answer h2,
+.docs-page h1,
+.docs-result h2,
+.activity-page h1,
+.activity-panel h2,
+.public-project-card h1 {
+  color: var(--text-primary);
+}
+
+.auth-card > p,
+.section-heading p,
+.welcome-card p:last-child,
+.feature-card p,
+.project-card > p,
+.project-meta,
+.project-info-card p,
+.member-card p,
+.section-description,
+.files-header > p:last-child,
+.upload-card p,
+.file-details span,
+.empty-files,
+.ai-header > p:last-child,
+.ai-character-count,
+.docs-header > p:last-child,
+.docs-result-header p,
+.activity-header > p:last-child,
+.activity-panel-heading p,
+.stat-card p,
+.stat-hint,
+.activity-item-content span,
+.activity-item-content time,
+.empty-activity,
+.public-project-description,
+.public-project-date,
+.notes-header > p:last-child,
+.note-card-header span,
+.note-author,
+.character-count {
+  color: var(--text-secondary);
+}
+
+.auth-card input,
+.project-form input,
+.project-form textarea,
+.project-form select,
+.upload-card input,
+.ai-form select,
+.ai-form textarea,
+.docs-form input,
+.docs-form select,
+.docs-form textarea,
+.docs-output,
+.share-link-row input,
+.note-editor input,
+.markdown-input,
+.search-input,
+.file-preview-modal {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background-color: var(--input-bg);
+}
+
+.auth-card input:focus,
+.project-form input:focus,
+.project-form textarea:focus,
+.project-form select:focus,
+.ai-form select:focus,
+.ai-form textarea:focus,
+.docs-form input:focus,
+.docs-form select:focus,
+.docs-form textarea:focus,
+.docs-output:focus,
+.share-link-row input:focus,
+.note-editor input:focus,
+.markdown-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 17%, transparent);
+}
+
+.auth-card button,
+.project-form button,
+.primary-button,
+.ai-workspace .primary-button,
+.share-section button,
+.workspace-management-card .primary-button,
+.markdown-toolbar button.active {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.auth-card button:hover,
+.project-form button:hover,
+.primary-button:hover,
+.ai-workspace .primary-button:hover,
+.share-section button:hover,
+.workspace-management-card .primary-button:hover,
+.markdown-toolbar button.active:hover {
+  color: #fff;
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.secondary-button {
+  color: var(--accent-hover);
+  background: var(--surface-soft);
+  border-color: var(--border-color);
+}
+
+.secondary-button:hover {
+  color: var(--accent-hover);
+  background: var(--border-color);
+}
+
+.danger-button {
+  color: var(--app-danger);
+  background: var(--app-danger-bg);
+}
+
+.project-icon,
+.role-pill,
+.workspace-role-pill,
+.workspace-tool-icon,
+.workspace-member-avatar,
+.workspace-empty > span,
+.workspace-count {
+  color: var(--accent-hover);
+  background: var(--surface-soft);
+}
+
+.project-link,
+.back-link,
+.workspace-footer a {
+  color: var(--accent-hover);
+}
+
+.project-meta,
+.workspace-footer {
+  border-color: var(--border-color);
+}
+
+.project-tools a {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) 18px;
+  justify-content: initial;
+  gap: 12px;
+  color: var(--accent-hover);
+  border-color: var(--border-color);
+  background: var(--surface);
+}
+
+.project-tools a:hover {
+  color: var(--accent-hover);
+  border-color: var(--accent);
+  background: var(--surface-soft);
+}
+
+.markdown-toolbar button,
+.markdown-formatting-toolbar button {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background: var(--surface);
+}
+
+.markdown-toolbar button:hover,
+.markdown-formatting-toolbar button:hover {
+  color: var(--accent-hover);
+  border-color: var(--accent);
+  background: var(--surface-soft);
+}
+
+.markdown-preview,
+.note-card-preview {
+  color: var(--text-primary);
+}
+
+.markdown-preview pre,
+.note-card-preview pre {
+  color: var(--text-primary);
+  background: var(--surface-soft);
+}
+
+.empty-state,
+.empty-notes,
+.empty-files,
+.empty-activity {
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+  background: var(--surface);
+}
+
+.activity-item,
+.contribution-table th,
+.contribution-table td {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.global-theme-toggle {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background: var(--surface);
+  box-shadow: 0 8px 26px var(--shadow-color);
+}
+
+.global-theme-icon {
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+
+.app-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  vertical-align: middle;
+}
+
+.project-tools a > .app-icon:first-child {
+  color: var(--accent);
+}
+
+.project-tools a > .app-icon:last-child {
+  color: var(--text-secondary);
+  transition: color .18s ease, transform .18s ease;
+}
+
+.project-tools a:hover > .app-icon:last-child {
+  color: var(--accent);
+  transform: translate(2px, -2px);
+}
+
+.stat-icon svg,
+.stats-grid article > span svg {
+  display: block;
+}
+
+.stats-grid .stat-card > span:first-child {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 12px;
+  color: var(--accent);
+  background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .auth-container,
+:root[data-theme="dark"] .public-project {
+  background:
+    radial-gradient(ellipse at top left, #24364b, transparent 54%),
+    var(--page-bg);
+}
+
+:root[data-theme="dark"] .welcome-card,
+:root[data-theme="dark"] .workspace-hero {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background: linear-gradient(120deg, #24364b, #192637);
+}
+
+:root[data-theme="dark"] .welcome-card h1,
+:root[data-theme="dark"] .welcome-card h2,
+:root[data-theme="dark"] .welcome-card h3,
+:root[data-theme="dark"] .workspace-hero h1 {
+  color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .workspace-role-pill,
+:root[data-theme="dark"] .workspace-tool-icon,
+:root[data-theme="dark"] .workspace-member-avatar,
+:root[data-theme="dark"] .workspace-empty > span,
+:root[data-theme="dark"] .workspace-count {
+  color: var(--accent-hover);
+  background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .workspace-member-role.editor,
+:root[data-theme="dark"] .workspace-member-role.viewer {
+  color: var(--text-secondary);
+  background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .file-preview-modal,
+:root[data-theme="dark"] .markdown-toolbar button,
+:root[data-theme="dark"] .markdown-formatting-toolbar button {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background: var(--surface);
+}
+
+:root[data-theme="dark"] .note-card-preview pre,
+:root[data-theme="dark"] .markdown-preview pre {
+  color: var(--text-primary);
+  background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .project-tools a {
+  color: var(--accent-hover);
+  border-color: var(--border-color);
+  background: var(--surface);
+}
+
+:root[data-theme="dark"] .project-tools a:hover {
+  border-color: var(--accent);
+  background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .contribution-table th {
+  background: var(--surface-soft);
+}
+
+@media (max-width: 650px) {
+  .global-theme-toggle {
+    right: 14px;
+    bottom: 14px;
+  }
+}
+
+.cs-dashboard {
+  --cs-ink: var(--text-primary);
+  --cs-muted: var(--text-secondary);
+  --cs-line: var(--border-color);
+  --cs-orange: var(--accent);
+  --cs-orange-dark: var(--accent-hover);
+  --cs-paper: var(--surface);
+  color: var(--text-primary);
+  background: var(--page-bg);
+}
+
+.cs-dashboard .cs-topbar {
+  border-color: var(--border-color);
+}
+
+.cs-dashboard .cs-brand,
+.cs-dashboard .cs-account-copy strong,
+.cs-dashboard .cs-hero h1,
+.cs-dashboard .cs-section-heading h2,
+.cs-dashboard .cs-project-card h3,
+.cs-dashboard .cs-create-panel h2,
+.cs-dashboard .cs-empty-state h3 {
+  color: var(--text-primary);
+}
+
+.cs-dashboard .cs-account-copy small,
+.cs-dashboard .cs-hero-copy > p,
+.cs-dashboard .cs-section-heading p,
+.cs-dashboard .cs-overview-card p,
+.cs-dashboard .cs-overview-card small,
+.cs-dashboard .cs-project-description,
+.cs-dashboard .cs-project-details,
+.cs-dashboard .cs-create-panel > p,
+.cs-dashboard .cs-privacy-note,
+.cs-dashboard .cs-footer {
+  color: var(--text-secondary);
+}
+
+.cs-dashboard .cs-account-avatar,
+.cs-dashboard .cs-mini-avatar,
+.cs-dashboard .cs-overview-icon,
+.cs-dashboard .cs-project-symbol,
+.cs-dashboard .cs-create-icon {
+  color: var(--accent-hover);
+  background: var(--surface-soft);
+}
+
+.cs-dashboard .cs-logout-button,
+.cs-dashboard .cs-search-box,
+.cs-dashboard .cs-overview-card,
+.cs-dashboard .cs-project-card,
+.cs-dashboard .cs-create-panel,
+.cs-dashboard .cs-empty-state {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background: var(--surface);
+  box-shadow: var(--app-shadow);
+}
+
+.cs-dashboard .cs-logout-button:hover {
+  color: var(--accent-hover);
+  border-color: var(--accent);
+  background: var(--surface-soft);
+}
+
+.cs-dashboard .cs-hero {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background: linear-gradient(120deg, var(--surface-soft), var(--surface));
+}
+
+.cs-dashboard .cs-eyebrow,
+.cs-dashboard .cs-hero h1 span,
+.cs-dashboard .cs-project-badge,
+.cs-dashboard .cs-open-project,
+.cs-dashboard .cs-empty-link {
+  color: var(--accent);
+}
+
+.cs-dashboard .cs-live-dot,
+.cs-dashboard .cs-badge-dot {
+  background: var(--accent);
+}
+
+.cs-dashboard .cs-hero-cta,
+.cs-dashboard .cs-create-button {
+  color: #fff;
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.cs-dashboard .cs-hero-cta:hover,
+.cs-dashboard .cs-create-button:hover {
+  color: #fff;
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+}
+
+.cs-dashboard .cs-projects-panel,
+.cs-dashboard .cs-main-grid {
+  color: var(--text-primary);
+}
+
+.cs-dashboard .cs-search-box input,
+.cs-dashboard .cs-create-form input,
+.cs-dashboard .cs-create-form textarea {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background: var(--input-bg);
+}
+
+.cs-dashboard .cs-search-box input::placeholder,
+.cs-dashboard .cs-create-form input::placeholder,
+.cs-dashboard .cs-create-form textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+.cs-dashboard .cs-search-box:focus-within,
+.cs-dashboard .cs-create-form input:focus,
+.cs-dashboard .cs-create-form textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 17%, transparent);
+}
+
+.cs-dashboard .cs-hero-art,
+.cs-dashboard .cs-art-window,
+.cs-dashboard .cs-art-float {
+  color: var(--text-primary);
+}
+
+.cs-dashboard .cs-art-window,
+.cs-dashboard .cs-art-float {
+  border-color: var(--border-color);
+  background: var(--surface);
+}
+
+.cs-dashboard .cs-art-sidebar,
+.cs-dashboard .cs-art-line,
+.cs-dashboard .cs-art-task i,
+.cs-dashboard .cs-art-task b,
+.cs-dashboard .cs-art-float > span,
+.cs-dashboard .cs-art-window-bar i {
+  background: var(--surface-soft);
+}
+
+.cs-dashboard .cs-art-task > span,
+.cs-dashboard .cs-art-float > span {
+  color: var(--accent);
+}
+
+.cs-dashboard .cs-hero-decoration,
+.cs-dashboard .cs-art-orbit {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.cs-home {
+  --home-bg: #f4f7fb;
+  --home-paper: #ffffff;
+  --home-ink: #273446;
+  --home-muted: #68788d;
+  --home-line: #d9e2ed;
+  --home-green: #183b64;
+  --home-green-dark: #102b49;
+  --home-sage: #e9eff7;
+  --home-gold: #8292a7;
+  background:
+    radial-gradient(ellipse at 86% 7%, rgba(201, 216, 235, .48), transparent 30%),
+    var(--home-bg);
+}
+
+.cs-home .cs-home-brand-mark,
+.cs-home .cs-home-note-icon,
+.cs-home .cs-home-author-avatar {
+  color: #fff;
+  background: linear-gradient(145deg, #315c8b, #183b64);
+}
+
+.cs-home .cs-home-visual-wash {
+  background:
+    radial-gradient(circle at 70% 22%, rgba(201, 216, 235, .7), transparent 24%),
+    linear-gradient(145deg, #e5edf7, #d6e1ef 55%, #cbd8e8);
+}
+
+.cs-home .cs-home-note-card,
+.cs-home .cs-home-project-card,
+.cs-home .cs-home-floating-tag {
+  color: var(--home-ink);
+  border-color: var(--home-line);
+  background: rgba(255, 255, 255, .97);
+  box-shadow: 0 24px 60px rgba(28, 48, 73, .13);
+}
+
+.cs-home .cs-home-note-card h2,
+.cs-home .cs-home-project-card h3,
+.cs-home .cs-home-note-author b,
+.cs-home .cs-home-progress b,
+.cs-home .cs-home-floating-tag b {
+  color: var(--home-ink);
+}
+
+.cs-home .cs-home-note-top,
+.cs-home .cs-home-project-top,
+.cs-home .cs-home-note-card > p,
+.cs-home .cs-home-note-author small,
+.cs-home .cs-home-project-card > p,
+.cs-home .cs-home-progress small,
+.cs-home .cs-home-floating-tag small {
+  color: var(--home-muted);
+}
+
+.cs-home .cs-home-note-rule,
+.cs-home .cs-home-progress {
+  border-color: var(--home-line);
+}
+
+.cs-home .cs-home-note-rule {
+  background: var(--home-line);
+}
+
+.cs-home .cs-home-note-check,
+.cs-home .cs-home-floating-tag > span:first-child,
+.cs-home .cs-home-feature-icon {
+  color: var(--home-green);
+  background: var(--home-sage);
+}
+
+.cs-home .cs-home-mini-avatars i,
+.cs-home .cs-home-avatar-stack i,
+.cs-home .cs-home-mini-avatars i:first-child,
+.cs-home .cs-home-mini-avatars i:nth-child(2),
+.cs-home .cs-home-mini-avatars i:nth-child(3),
+.cs-home .cs-home-author-avatar {
+  border-color: var(--home-paper);
+  background: #315c8b;
+}
+
+.cs-home .cs-home-project-dot {
+  background: var(--home-gold);
+}
+
+.cs-home .cs-home-feature-card {
+  border-color: var(--home-line);
+  background: color-mix(in srgb, var(--home-paper) 82%, transparent);
+}
+
+.cs-home .cs-home-feature-card:hover {
+  border-color: var(--home-green);
+  box-shadow: 0 16px 38px rgba(28, 48, 73, .1);
+}
+
+.cs-home .cs-home-feature-card h3,
+.cs-home .cs-home-cta h2 {
+  color: var(--home-ink);
+}
+
+.cs-home .cs-home-feature-top > span:last-child,
+.cs-home .cs-home-feature-label,
+.cs-home .cs-home-feature-card p,
+.cs-home .cs-home-footer > span,
+.cs-home .cs-home-cta > p {
+  color: var(--home-muted);
+}
+
+.cs-home .cs-home-feature-arrow {
+  color: var(--home-green);
+}
+
+.cs-home .cs-home-cta {
+  background:
+    radial-gradient(ellipse at 50% 140%, rgba(141, 171, 207, .22), transparent 48%),
+    linear-gradient(115deg, var(--home-sage), var(--home-paper));
+}
+
+.cs-home .cs-home-cta-orbit {
+  color: color-mix(in srgb, var(--home-green) 38%, transparent);
+}
+
+.cs-home[data-theme="dark"] {
+  --home-bg: #101923;
+  --home-paper: #192637;
+  --home-ink: #f2f5f9;
+  --home-muted: #a8b5c5;
+  --home-line: #35465a;
+  --home-green: #8db8ea;
+  --home-green-dark: #b5d1f2;
+  --home-sage: #24364b;
+  --home-gold: #8292a7;
+  background:
+    radial-gradient(ellipse at 86% 7%, rgba(66, 104, 151, .2), transparent 32%),
+    var(--home-bg);
+}
+
+.cs-home[data-theme="dark"] .cs-home-visual-wash {
+  background:
+    radial-gradient(circle at 70% 22%, rgba(141, 184, 234, .25), transparent 24%),
+    linear-gradient(145deg, #24364b, #1f3044 55%, #192637);
+}
+
+.cs-home[data-theme="dark"] .cs-home-note-card,
+.cs-home[data-theme="dark"] .cs-home-project-card,
+.cs-home[data-theme="dark"] .cs-home-floating-tag {
+  border-color: var(--home-line);
+  background: rgba(25, 38, 55, .97);
+}
+
+.cs-home[data-theme="dark"] .cs-home-feature-card {
+  background: rgba(25, 38, 55, .78);
+}
+
+.cs-home[data-theme="dark"] .cs-home-feature-card:hover {
+  border-color: var(--home-green);
+}
+
+.cs-home[data-theme="dark"] .cs-home-cta {
+  background:
+    radial-gradient(ellipse at 50% 140%, rgba(141, 184, 234, .16), transparent 48%),
+    linear-gradient(115deg, #24364b, #192637);
+}
+
+.cs-home[data-theme="dark"] .cs-home-hero h1 em,
+.cs-home[data-theme="dark"] .cs-home-intro h2 em,
+.cs-home[data-theme="dark"] .cs-home-cta h2 em,
+.cs-home[data-theme="dark"] .cs-home-feature-icon,
+.cs-home[data-theme="dark"] .cs-home-avatar-stack b {
+  color: var(--home-green);
+}
+
+.cs-home[data-theme="dark"] .cs-home-feature-icon,
+.cs-home[data-theme="dark"] .cs-home-avatar-stack b {
+  background: var(--home-sage);
+}
+
+:root[data-theme="dark"] .cs-dashboard[data-theme="dark"] {
+  --cs-page: var(--page-bg);
+  --cs-surface: var(--surface);
+  --cs-surface-soft: var(--surface-soft);
+  --cs-text: var(--text-primary);
+  --cs-text-secondary: var(--text-secondary);
+  --cs-border: var(--border-color);
+  --cs-input-bg: var(--input-bg);
+  --cs-orange: var(--accent);
+  --cs-orange-hover: var(--accent-hover);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-brand-mark,
+:root[data-theme="dark"] .cs-dashboard .cs-create-icon {
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 7px 20px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-account-avatar,
+:root[data-theme="dark"] .cs-dashboard .cs-mini-avatar {
+  color: var(--accent-hover);
+  background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-logout-button:hover,
+:root[data-theme="dark"] .cs-dashboard .cs-open-project:hover {
+  color: var(--accent-hover);
+  border-color: var(--accent);
+  background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-hero {
+  border-color: var(--border-color);
+  background: linear-gradient(115deg, #24364b, #192637);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-hero h1,
+:root[data-theme="dark"] .cs-dashboard .cs-project-card h3,
+:root[data-theme="dark"] .cs-dashboard .cs-create-panel h2 {
+  color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-hero h1 span,
+:root[data-theme="dark"] .cs-dashboard .cs-eyebrow,
+:root[data-theme="dark"] .cs-dashboard .cs-hero-decoration,
+:root[data-theme="dark"] .cs-dashboard .cs-art-label {
+  color: var(--accent);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-hero-cta,
+:root[data-theme="dark"] .cs-dashboard .cs-create-button {
+  color: #102033;
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-hero-cta:hover,
+:root[data-theme="dark"] .cs-dashboard .cs-create-button:hover {
+  color: #102033;
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-art-window,
+:root[data-theme="dark"] .cs-dashboard .cs-art-float {
+  border-color: var(--border-color);
+  background: var(--surface);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-art-window-bar,
+:root[data-theme="dark"] .cs-dashboard .cs-art-sidebar {
+  border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-art-window-bar span,
+:root[data-theme="dark"] .cs-dashboard .cs-art-float small {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-art-sidebar i,
+:root[data-theme="dark"] .cs-dashboard .cs-art-sidebar b,
+:root[data-theme="dark"] .cs-dashboard .cs-art-line,
+:root[data-theme="dark"] .cs-dashboard .cs-art-task i,
+:root[data-theme="dark"] .cs-dashboard .cs-art-task b,
+:root[data-theme="dark"] .cs-dashboard .cs-art-window-bar i {
+  background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-art-task span,
+:root[data-theme="dark"] .cs-dashboard .cs-art-float > span,
+:root[data-theme="dark"] .cs-dashboard .cs-overview-icon.orange,
+:root[data-theme="dark"] .cs-dashboard .cs-overview-icon.peach,
+:root[data-theme="dark"] .cs-dashboard .cs-overview-icon.green,
+:root[data-theme="dark"] .cs-dashboard .cs-project-symbol,
+:root[data-theme="dark"] .cs-dashboard .cs-project-badge,
+:root[data-theme="dark"] .cs-dashboard .cs-count-pill,
+:root[data-theme="dark"] .cs-dashboard .cs-open-project {
+  color: var(--accent-hover);
+  border-color: var(--border-color);
+  background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-art-float b,
+:root[data-theme="dark"] .cs-dashboard .cs-overview-card strong,
+:root[data-theme="dark"] .cs-dashboard .cs-create-form label {
+  color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-project-details {
+  border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-create-panel {
+  border-color: var(--border-color);
+  background: linear-gradient(165deg, var(--surface-soft), var(--surface));
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-create-form label small,
+:root[data-theme="dark"] .cs-dashboard .cs-privacy-note {
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-create-form input,
+:root[data-theme="dark"] .cs-dashboard .cs-create-form textarea {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background: var(--input-bg);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-create-form input:focus,
+:root[data-theme="dark"] .cs-dashboard .cs-create-form textarea:focus,
+:root[data-theme="dark"] .cs-dashboard .cs-search-box:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 17%, transparent);
+}
+
+html[data-theme] .eyebrow,
+html[data-theme] .workspace-kicker,
+html[data-theme] .workspace-overline {
+  color: var(--accent) !important;
+}
+
+html[data-theme] .auth-card a,
+html[data-theme] .project-link,
+html[data-theme] .back-link,
+html[data-theme] .workspace-back-link,
+html[data-theme] .workspace-tool-link,
+html[data-theme] .workspace-footer a,
+html[data-theme] .project-tools a,
+html[data-theme] .cs-dashboard .cs-open-project,
+html[data-theme] .cs-dashboard .cs-empty-link {
+  color: var(--accent);
+}
+
+html[data-theme] .upload-card input[type="file"]::file-selector-button {
+  color: #fff;
+  background: var(--accent);
+}
+
+html[data-theme] .upload-card input[type="file"]::file-selector-button:hover {
+  background: var(--accent-hover);
+}
+
+html[data-theme] .upload-card input[type="file"]:focus-visible {
+  outline-color: var(--accent);
+}
+
+html[data-theme] .status-message.success,
+html[data-theme] .success-message {
+  color: var(--accent-hover);
+  border: 1px solid var(--border-color);
+  background: var(--surface-soft);
+}
+
+html[data-theme] .activity-dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 5px var(--surface-soft);
+}
+
+html[data-theme] .workspace-role-dot,
+html[data-theme] .workspace-hero-art i,
+html[data-theme] .workspace-hero-art b,
+html[data-theme] .workspace-hero-art em {
+  background: var(--accent);
+}
+
+html[data-theme] .workspace-member-role.editor,
+html[data-theme] .workspace-member-role.viewer {
+  color: var(--accent-hover);
+  background: var(--surface-soft);
+}
+
+html[data-theme] .contribution-panel,
+html[data-theme] .gemini-result {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background: var(--surface);
+  box-shadow: var(--app-shadow);
+}
+
+html[data-theme] .gemini-result pre,
+html[data-theme] .markdown-preview pre,
+html[data-theme] .note-card-preview pre {
+  color: var(--text-primary);
+  background: var(--surface-soft);
+}
+
+html[data-theme] .markdown-input,
+html[data-theme] .markdown-preview,
+html[data-theme] .file-preview-modal,
+html[data-theme] .file-preview-pdf {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background-color: var(--input-bg);
+}
+
+html[data-theme] .markdown-toolbar button.active {
+  color: #fff;
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+:root[data-theme] .public-project-notice {
+  color: var(--accent-hover);
+  border-color: var(--border-color);
+  background: var(--surface-soft);
+}
+
+:root[data-theme="light"],
+:root[data-theme="light"] body,
+:root[data-theme="light"] #root {
+  color-scheme: light;
+  color: var(--text-primary);
+  background: var(--page-bg);
+}
+
+:root[data-theme="dark"],
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] #root {
+  color-scheme: dark;
+  color: var(--text-primary);
+  background: var(--page-bg);
+}
+
+:root,
+:root[data-theme="light"] {
+  --app-success: var(--accent-hover);
+  --app-success-bg: var(--surface-soft);
+}
+
+:root[data-theme="dark"] {
+  --app-success: var(--accent-hover);
+  --app-success-bg: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .global-theme-toggle,
+:root[data-theme="dark"] .global-theme-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  background: var(--surface);
+}
+
+:root[data-theme="dark"] .auth-card a,
+:root[data-theme="dark"] .project-link,
+:root[data-theme="dark"] .back-link,
+:root[data-theme="dark"] .workspace-back-link,
+:root[data-theme="dark"] .workspace-tool-link,
+:root[data-theme="dark"] .workspace-footer a,
+:root[data-theme="dark"] .project-tools a {
+  color: var(--accent);
+}
+
+:root[data-theme="dark"] .project-icon,
+:root[data-theme="dark"] .role-pill,
+:root[data-theme="dark"] .secondary-button,
+:root[data-theme="dark"] .workspace-member-role.editor,
+:root[data-theme="dark"] .workspace-member-role.viewer {
+  color: var(--accent-hover);
+  background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .activity-dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 5px var(--surface-soft);
+}
+
+:root[data-theme="dark"] .project-tools a:hover {
+  color: var(--accent-hover);
+  border-color: var(--accent);
+  background: var(--surface-soft);
+}
+
+:root[data-theme="dark"] .workspace-hero-art i,
+:root[data-theme="dark"] .workspace-hero-art b,
+:root[data-theme="dark"] .workspace-hero-art em,
+:root[data-theme="dark"] .workspace-role-dot {
+  background: var(--accent);
+}
+
+:root[data-theme="dark"] .auth-card button,
+:root[data-theme="dark"] .project-form button,
+:root[data-theme="dark"] .primary-button,
+:root[data-theme="dark"] .ai-workspace .primary-button,
+:root[data-theme="dark"] .share-section button,
+:root[data-theme="dark"] .workspace-management-card .primary-button,
+:root[data-theme="dark"] .markdown-toolbar button.active,
+:root[data-theme="dark"] .upload-card input[type="file"]::file-selector-button {
+  color: #102033;
+}
+
+.cs-dashboard .cs-brand-mark {
+  color: #fff;
+  background: linear-gradient(145deg, #315c8b, #183b64);
+  box-shadow: 0 7px 18px rgba(24, 59, 100, .2);
+}
+
+.cs-dashboard .cs-overview-icon,
+.cs-dashboard .cs-create-icon,
+.cs-dashboard .cs-empty-icon {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  background: var(--surface-soft);
+}
+
+.cs-dashboard .cs-project-badge.is-owned,
+.cs-dashboard .cs-project-badge.is-shared {
+  color: var(--accent-hover);
+  background: var(--surface-soft);
+}
+
+.cs-dashboard .cs-project-badge .cs-badge-dot {
+  background: var(--accent);
+}
+
+.cs-dashboard .cs-project-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.cs-dashboard .cs-art-label,
+.cs-dashboard .cs-art-task > span {
+  color: var(--accent);
+}
+
+.cs-dashboard .cs-art-task > span {
+  background: var(--surface-soft);
+}
+
+.cs-home .cs-home-progress-ring {
+  color: var(--home-green);
+  border-color: var(--home-line);
+  border-top-color: var(--home-green);
+  border-right-color: var(--home-green);
+}
+
+.cs-home .cs-home-arrow,
+.cs-home .cs-home-ribbon i {
+  color: var(--home-green);
+}
+
+.cs-home .cs-home-ribbon > span {
+  color: var(--home-muted);
+}
+
+.cs-home .cs-home-project-dot {
+  background: var(--home-gold);
+}
+
+.project-tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: 14px;
+}
+
+.project-tools a {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 12px;
+  min-height: 62px;
+  padding: 11px 14px;
+  border-radius: 14px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 650;
+  box-shadow: var(--app-shadow);
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    background-color .18s ease,
+    box-shadow .18s ease;
+}
+
+.project-tools a > .app-icon:first-child {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  padding: 9px;
+  border-radius: 11px;
+  color: var(--accent);
+  background: var(--surface-soft);
+  box-sizing: border-box;
+  transition:
+    color .18s ease,
+    background-color .18s ease,
+    transform .18s ease;
+}
+
+.project-tools a > .app-icon:last-child {
+  color: var(--text-secondary);
+  transition: color .18s ease, transform .18s ease;
+}
+
+.project-tools a:hover {
+  transform: translateY(-2px);
+  color: var(--text-primary);
+  border-color: var(--accent);
+  background: var(--surface-soft);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--accent) 11%, transparent);
+}
+
+.project-tools a:hover > .app-icon:first-child {
+  color: #fff;
+  background: var(--accent);
+  transform: scale(1.04);
+}
+
+.project-tools a:hover > .app-icon:last-child {
+  color: var(--accent);
+  transform: translate(2px, -2px);
+}
+
+:root[data-theme="dark"] .cs-dashboard .cs-brand-mark {
+  box-shadow: 0 7px 20px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+.upload-card {
+  gap: 14px;
+  padding: clamp(18px, 2.5vw, 26px);
+  border-radius: 18px;
+  box-shadow: var(--app-shadow);
+}
+
+.upload-card h2 {
+  font-size: 19px;
+  letter-spacing: -.3px;
+}
+
+.upload-card input[type="file"] {
+  min-height: 48px;
+  padding: 6px;
+  border-color: var(--border-color);
+  border-radius: 11px;
+  background: var(--input-bg);
+}
+
+.upload-card input[type="file"]::file-selector-button {
+  min-height: 34px;
+  margin-right: 12px;
+  padding: 7px 13px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--accent);
+  background: var(--surface-soft);
+  font-size: 12px;
+  font-weight: 650;
+  transition:
+    background-color .18s ease,
+    color .18s ease,
+    border-color .18s ease;
+}
+
+.upload-card input[type="file"]::file-selector-button:hover {
+  color: #fff;
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.upload-card .upload-submit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  justify-content: center;
+  gap: 9px;
+  min-width: 154px;
+  min-height: 42px;
+  padding: 10px 17px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  box-shadow: 0 5px 14px color-mix(in srgb, var(--accent) 17%, transparent);
+  font-size: 13px;
+  font-weight: 650;
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    background-color .18s ease;
+}
+
+.upload-card .upload-submit-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.upload-card .upload-submit-button:disabled {
+  justify-self: start;
+  opacity: .7;
+}
+
+.upload-submit-button .app-icon {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 480px) {
+  .upload-card .upload-submit-button {
+    width: 100%;
+    justify-self: stretch;
+  }
+}
+
+html[data-theme] .upload-card input[type="file"]::file-selector-button {
+  color: var(--accent);
+  border-color: var(--border-color);
+  background: var(--surface-soft);
+}
+
+html[data-theme] .upload-card input[type="file"]::file-selector-button:hover {
+  color: #fff;
+  border-color: var(--accent);
+  background: var(--accent);
+}
